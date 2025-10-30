@@ -9,6 +9,7 @@ export default function App() {
       {page === "upload" && <Upload setPage={setPage} />}
       {page === "gallery" && <Gallery />}
       {page === "admin" && <Admin />}
+      {page === "schoolAndPartners" && <SchoolAndPartners />}
     </div>
   );
 }
@@ -19,7 +20,8 @@ function Header({ setPage }) {
       <button onClick={() => setPage("home")}>Home</button>{" "}
       <button onClick={() => setPage("upload")}>Upload</button>{" "}
       <button onClick={() => setPage("gallery")}>Gallery</button>{" "}
-      <button onClick={() => setPage("admin")}>Admin</button>
+      <button onClick={() => setPage("admin")}>Admin</button>{" "}
+      <button onClick={() => setPage("schoolAndPartners")}>School & Partners</button>
     </div>
   );
 }
@@ -79,14 +81,17 @@ function Gallery() {
   return (
     <div>
       <h2>Approved Gallery</h2>
-      {videos.map((v) => (
-        <div key={v.id} style={{ marginBottom: "20px" }}>
-          <h3>{v.artType}</h3>
-          <p>{v.name} - {v.location}</p>
-          <video src={`file://${v.videoPath}`} width="400" controls />
-          <p>{v.description}</p>
-        </div>
-      ))}
+      {videos.map((v) => {
+        const videoFilename = v.videoPath.split('/').pop(); // Extracts the filename
+        return (
+          <div key={v.id} style={{ marginBottom: "20px" }}>
+            <h3>{v.artType}</h3>
+            <p>{v.name} - {v.location}</p>
+            <video src={`http://localhost:8080/api/videos/${videoFilename}`} width="400" controls />
+            <p>{v.description}</p>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -105,19 +110,35 @@ function Admin() {
     reload();
   };
 
+
   return (
     <div>
       <h2>Pending Submissions</h2>
-      {pending.map((v) => (
-        <div key={v.id}>
-          <h4>{v.name} - {v.artType}</h4>
-          <video src={`file://${v.videoPath}`} width="300" controls />
-          <div>
-            <button onClick={() => approve(v.id)}>Approve</button>
-            <button onClick={() => reject(v.id)}>Reject</button>
+      {pending.map((v) => {
+        const videoFilename = v.videoPath.split('/').pop(); // Move this line here
+        return (
+          <div key={v.id}>
+            <h4>{v.name} - {v.artType}</h4>
+            <video src={`http://localhost:8080/api/videos/${videoFilename}`} width="400" controls />
+            <div>
+              <button onClick={() => approve(v.id)}>Approve</button>
+              <button onClick={() => reject(v.id)}>Reject</button>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+    </div>
+  );
+}
+
+function SchoolAndPartners() {
+  return (
+    <div>
+      <h2>School Communities & Partners</h2>
+      <p>We collaborate with schools and educational institutions dedicated to the preservation and promotion of cultural arts. These partnerships ensure that traditional knowledge is passed on to the next generation.</p>
+      <h2>Our Current Partners</h2>
+      <p>Shree Niketan Patasala</p>
+      <p>Committed to cultural education and preservation.</p>
     </div>
   );
 }
