@@ -87,7 +87,7 @@ function Gallery() {
           <div key={v.id} style={{ marginBottom: "20px" }}>
             <h3>{v.artType}</h3>
             <p>{v.name} - {v.location}</p>
-            <video src={`http://localhost:8080/api/videos/${videoFilename}`} width="400" controls />
+            <video src={`https://revival20.onrender.com/api/videos/${videoFilename}`} width="400" controls />
             <p>{v.description}</p>
           </div>
         );
@@ -119,7 +119,7 @@ function Admin() {
         return (
           <div key={v.id}>
             <h4>{v.name} - {v.artType}</h4>
-            <video src={`http://localhost:8080/api/videos/${videoFilename}`} width="400" controls />
+            <video src={`https://revival20.onrender.com/api/videos/${videoFilename}`} width="400" controls />
             <div>
               <button onClick={() => approve(v.id)}>Approve</button>
               <button onClick={() => reject(v.id)}>Reject</button>
